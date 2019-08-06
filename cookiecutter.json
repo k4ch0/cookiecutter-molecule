@@ -1,9 +1,14 @@
 {
     "role_name": "role_name",
     "scenario_name": "default",
-    "author": "your name",
-    "description": "your description",
-    "company": "your company (optional)",
-    "license": ["BSD", "MIT", "GPLv2", "GPLv3", "Apache", "CC-BY"],
-    "min_ansible_version": 1.2
+    "author": "Luis Cacho",
+    "description": "role_description",
+    "company": "Rackspace",
+    "license": ["MIT"],
+    "min_ansible_version": 2.7.0,
+    "platforms_name": "Ubuntu",
+    "platforms_versions": ["16.04","18.04","19.04"],
+    "molecule_platform_name": "instance_ci",
+    "molecule_platform_hostname": "instance_ci",
+    "molecule_platform_image": "linuxmintd/mint19-amd64"
 }

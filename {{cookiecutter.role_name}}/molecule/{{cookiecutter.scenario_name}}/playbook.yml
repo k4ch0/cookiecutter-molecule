@@ -1,5 +1,12 @@
 ---
 - name: Converge
   hosts: all
+
+  pre_tasks:
+    - name: Print role name
+      debug:
+        msg: "Applying role {{ cookiecutter.role_name}}"
+      changed_when: false
+
   roles:
     - role: {{ cookiecutter.role_name }}
