@@ -1,0 +1,19 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: {{ cookiecutter.author }}
+  company: {{ cookiecutter.company }}
+  description: {{ cookiecutter.role_description }}
+  license: {{ cookiecutter.license }}
+  min_ansible_version: {{ cookiecutter.min_ansible_version }}
+  platforms:
+  {% for distro, details in cookiecutter.platforms|dictsort %}
+    - name: {{ distro }}
+      versions:
+        {% for versions in details.versions -%}
+        - {{ versions }}
+        {% endfor -%}
+  {% endfor %}
+
+allow_duplicates: false

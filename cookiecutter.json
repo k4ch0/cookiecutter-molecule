@@ -1,15 +1,80 @@
 {
-    "role_name": "role_name",
-    "scenario_name": [ "test-ci", "test-vg" ],
+    "role_name": "Role Name",
+    "role_name_slug": "{{ cookiecutter.role_name|lower|replace(' ', '-') }}",
+    "role_description": "Role Description",
     "author": "Luis Cacho",
-    "description": "role_description",
     "company": "Rackspace",
-    "license": ["BSD", "MIT", "GPLv2", "GPLv3", "Apache", "CC-BY"],
-    "min_ansible_version": "2.7.10",
-    "platforms_name": "Ubuntu",
-    "platforms_versions": { "versions": ["16.04","18.04","19.04"] },
-    "molecule_platform_name": "instance_ci",
-    "molecule_platform_hostname": "instance_ci",
-    "molecule_platform_image": "linuxmintd/mint19-amd64",
-    "molecule_driver": [ "docker", "vagrant" ]
+    "license": ["MIT", "GPLv3", "Apache", "Mozilla", "Unlicense"],
+    "min_ansible_version": "2.7.12",
+    "platforms": {
+        "Ubuntu": {
+            "versions": {
+                "16.04": {
+                    "name": "instance-1604",
+                    "hostname": "ubuntu-1604",
+                    "docker_image": "ubuntu/xenial",
+                    "docker_privileged": "true",
+                    "docker_pre_build_image": "true",
+                    "vagrant_box": "ubuntu/xenial64",
+                    "vagrant_memory": 4096,
+                    "vagrant_cpus": 4
+                },
+                "18.04": {
+                    "name": "instance-1804",
+                    "hostname": "ubuntu-1804",
+                    "docker_image": "ubuntu/bionic",
+                    "docker_privileged": "true",
+                    "docker_pre_build_image": "true",
+                    "vagrant_box": "ubuntu/bionic64",
+                    "vagrant_memory": 4096,
+                    "vagrant_cpus": 4
+                }
+            }                
+        },
+        "Linux Mint": {
+            "versions": {
+                "19": {
+                    "name": "instance-mint19",
+                    "hostname": "mint-19",
+                    "docker_image": "linuxmintd/mint19-amd64",
+                    "vagrant_box": "boxcycler/linuxmint-19-cinnamon-64bit-v2-release",
+                    "docker_privileged": "true",
+                    "docker_pre_build_image": "true",
+                    "vagrant_memory": 4096,
+                    "vagrant_cpus": 4
+                },
+                "18": {
+                    "name": "instance-18",
+                    "hostname": "mint-18",
+                    "docker_image": "linuxmintd/mint18-amd64",
+                    "vagrant_box": "boxcycler/linuxmint-18.3-cinnamon-64bit-release",
+                    "docker_privileged": "true",
+                    "docker_pre_build_image": "true",
+                    "vagrant_memory": 4096,
+                    "vagrant_cpus": 4
+                }
+            }
+        },
+        "CentOS": {
+            "versions": {
+                "7": {
+                    "name": "instance-centos7",
+                    "hostname": "centos7",
+                    "docker_image": "centos/7",
+                    "vagrant_box": "centos/7",
+                    "docker_privileged": "true",
+                    "docker_pre_build_image": "true",
+                    "vagrant_memory": 4096,
+                    "vagrant_cpus": 4
+                }
+            }
+        }
+    },
+    "molecule_scenario_name": [ "default", "cicd","vagrant" ],
+    "molecule_driver": [ "docker", "vagrant" ],
+    "year": "{% now 'utc', '%Y' %}",
+    "_copy_without_render": [
+        "molecule/{{cookiecutter.molecule_scenario_name}}/Dockerfile.j2"
+    ]
+
 }

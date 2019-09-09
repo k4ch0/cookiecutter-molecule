@@ -1,0 +1,40 @@
+gasgags:
+  {{ cookiecutter.platforms|dictsort }}
+  {% for a, z in cookiecutter.platforms|dictsort recursive %}
+    {% for b in z.values() %}
+      b: {{ b }}
+    {% endfor %}
+  {% endfor %}
+
+
+tafsd:
+  {% for i, j in cookiecutter.platforms|dictsort recursive %}
+    i = {{ i }}
+    {% for k, l in j.items() %}
+      k = {{ k }}
+      l = {{ l }}
+      {% for m, n in l.items() %}
+        m = {{ m }}
+        n = {{ n }}
+        {% for o, p in n.items() %}
+          {{ o }} : {{ p }}
+        {% endfor%}
+      {% endfor%}
+    {% endfor %}
+  {% endfor %}
+
+  asdasdtafsd:
+  {% for i, j in cookiecutter.platforms|dictsort recursive %}
+    i = {{ i }}
+    {% for k, l in j.items() %}
+      k = {{ k }}
+      l = {{ l }}
+      {% for m, n in l.items() %}
+        m = {{ m }}
+        n = {{ n }}
+        name = {{ n.name }}
+        ht = {{ n.hostname }}
+        asd = {{ n. docker_image }}
+      {% endfor%}
+    {% endfor %}
+  {% endfor %}

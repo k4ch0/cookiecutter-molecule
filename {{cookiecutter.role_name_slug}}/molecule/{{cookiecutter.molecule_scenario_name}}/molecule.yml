@@ -1,0 +1,88 @@
+---
+dependency:
+  name: galaxy
+
+driver:
+  {%- if cookiecutter.molecule_scenario_name == "vagrant" -%}
+    name: vagrant
+  {% else %}
+    name: docker
+  {% endif %}
+
+lint:
+  name: yamllint
+  options:
+    config-file: .yamllint
+
+platforms:
+  {% for i, j in cookiecutter.platforms|dictsort recursive -%}
+    {% for k, l in j.items() -%}
+      {% for m, n in l.items() -%}
+  - name: {{ n.name }}
+    hostname: {{ n.hostname }}
+        {% if cookiecutter.molecule_scenario_name == "vagrant" -%}
+    box: {{ n.vagrant_box }}
+    memory: {{ n.vagrant_memory }}
+    cpu: {{ n. vagrant_cpus }}
+        {% else %}
+    image: {{ n.docker_image }}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /var/lib/docker
+    privileged: {{ n.docker_privileged }}
+    pre_build_image: {{ n.docker_pre_build_image }}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endfor -%}
+  {%- endfor -%}
+
+provisioner:
+  name: ansible
+  log: true
+  options:
+    vvv: true
+  config_options:
+    defaults:
+      # strategy_plugins: ../plugins/mitogen-dmw/ansible_mitogen/plugins/strategy/
+      # strategy_plugins: $VIRTUAL_ENV/lib/python3.6/site-packages/ansible_mitogen/plugins/strategy/
+      # strategy: mitogen_linear
+      retry_files_enabled: false
+      stdout_callback: default
+      callback_whitelist: profile_tasks, timer, profile_roles
+      fact_caching: jsonfile
+      fact_caching_connection: /tmp
+    ssh_connection:
+      pipelining: true
+      ssh_args: -C -o ForwardAgent=yes -o StrictHostKeyChecking=no -o ControlMaster=auto -o ControlPersist=15m -o ConnectionAttempts=100 -o UserKnownHostsFile=/dev/null
+      control_path: /tmp/ansible-ssh-%%h-%%p-%%r
+  callback_profile_tasks:
+    task_output_limit: 50
+    sort_order: ascending
+  lint:
+    name: ansible-lint
+
+scenario:
+  name: {{cookiecutter.molecule_scenario_name }}
+  test_sequence:
+    - lint
+    - destroy
+    - dependency
+    - syntax
+    - create
+    - prepare
+    - converge
+    - idempotence
+    - side_effect
+    - verify
+    - destroy
+
+verifier:
+  name: testinfra
+  directory: tests
+  options:
+    vvv: true
+    verbose: true
+    verbosity: 7
+    sudo: true
+  lint:
+    name: flake8

@@ -1,0 +1,6 @@
+---
+# defaults file for {{ cookiecutter.role_name_slug }}
+{% raw %}
+debug_verbosity: 1
+{% endraw %}
+
