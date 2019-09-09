@@ -33,4 +33,4 @@ License
 
 Author Information
 ------------------
-{{ cookiecutter.author }}
+{{ cookiecutter.author }} - {{ cookiecutter.year }}
