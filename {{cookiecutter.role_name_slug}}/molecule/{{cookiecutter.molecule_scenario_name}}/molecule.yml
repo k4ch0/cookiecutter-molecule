@@ -86,3 +86,5 @@ verifier:
     sudo: true
   lint:
     name: flake8
+    options:
+      max-line-length: 120
